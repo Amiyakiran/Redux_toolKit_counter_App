@@ -1,10 +1,23 @@
 import React from 'react'
-import { decrement, increment,reset } from '../redux/counterSlice'
+import { decrement, increment,reset ,incrementByAmount } from '../redux/counterSlice'
 import { useDispatch, useSelector } from 'react-redux'
+import { useState } from 'react'
 
 function Counter() {
-    const count = useSelector((state) => state.counter.value)
+  const [range,setRange] = useState("")
+  //useSelector hook is used to access the state in the store
+    const count = useSelector((state) => state.counter.value) //counter is the reducer and value is the state
+    //useDispatch hook is used to dispatch the function
   const dispatch = useDispatch()
+  
+  const handleRange = ()=>{
+    if(!range){
+      alert('Please provide range')
+    }
+    else{
+      dispatch(incrementByAmount(Number(range)))
+    }
+  }
   return (
     <div>
       <div className='mt-5 d-flex align-items-center justify-content-center flex-column w-100'>
@@ -12,7 +25,7 @@ function Counter() {
         <div className='mt-5'>
           <button className='btn btn-success p-3'
             aria-label="Increment value"
-            onClick={() => dispatch(increment())}
+            onClick={() => dispatch(increment(Number(range)))}
           >
             Increment
           </button>
@@ -29,6 +42,10 @@ function Counter() {
           >
             Reset
           </button>
+        </div>
+        <div className='d-flex mt-5'>
+          <input onChange={(e)=>setRange(e.target.value)} type="text" className='form-control' style={{borderColor:'black'}} placeholder='Enter the number range' />
+          <button onClick={handleRange} className='btn btn-primary ms-3 '>Increment by amount</button>
         </div>
       </div>
     </div>
